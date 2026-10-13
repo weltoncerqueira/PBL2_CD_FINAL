@@ -127,6 +127,7 @@ module subtrator_18bits (
 	 somador_completo soma17 (a[17], nb[17], c[16], dif[17], c[17]);
 	 
 	 // Tratamento de overflow
+	 // Se A e B têm sinais diferentes, então A e -B terão o mesmo sinal.
 	 wire sinal_diferente;
 	 wire resultado_invalido;
 
