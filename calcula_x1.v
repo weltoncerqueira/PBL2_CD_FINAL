@@ -35,15 +35,15 @@ module calcula_x1 (
     wire [8:0] c;
     wire [8:0] soma;
 
-    somador_completo s0 (.A(b_neg9[0]), .B(raiz[0]), .cin(1'b0), .S(soma[0]), .cout(c[0]));
-    somador_completo s1 (.A(b_neg9[1]), .B(raiz[1]), .cin(c[0]), .S(soma[1]), .cout(c[1]));
-    somador_completo s2 (.A(b_neg9[2]), .B(raiz[2]), .cin(c[1]), .S(soma[2]), .cout(c[2]));
-    somador_completo s3 (.A(b_neg9[3]), .B(raiz[3]), .cin(c[2]), .S(soma[3]), .cout(c[3]));
-    somador_completo s4 (.A(b_neg9[4]), .B(raiz[4]), .cin(c[3]), .S(soma[4]), .cout(c[4]));
-    somador_completo s5 (.A(b_neg9[5]), .B(raiz[5]), .cin(c[4]), .S(soma[5]), .cout(c[5]));
-    somador_completo s6 (.A(b_neg9[6]), .B(raiz[6]), .cin(c[5]), .S(soma[6]), .cout(c[6]));
-    somador_completo s7 (.A(b_neg9[7]), .B(raiz[7]), .cin(c[6]), .S(soma[7]), .cout(c[7]));
-    somador_completo s8 (.A(b_neg9[8]), .B(raiz[8]), .cin(c[7]), .S(soma[8]), .cout(c[8]));
+    somador_completo soma_x1_1 (.A(b_neg9[0]), .B(raiz[0]), .cin(1'b0), .S(soma[0]), .cout(c[0]));
+    somador_completo soma_x1_2 (.A(b_neg9[1]), .B(raiz[1]), .cin(c[0]), .S(soma[1]), .cout(c[1]));
+    somador_completo soma_x1_3 (.A(b_neg9[2]), .B(raiz[2]), .cin(c[1]), .S(soma[2]), .cout(c[2]));
+    somador_completo soma_x1_4 (.A(b_neg9[3]), .B(raiz[3]), .cin(c[2]), .S(soma[3]), .cout(c[3]));
+    somador_completo soma_x1_5 (.A(b_neg9[4]), .B(raiz[4]), .cin(c[3]), .S(soma[4]), .cout(c[4]));
+    somador_completo soma_x1_6 (.A(b_neg9[5]), .B(raiz[5]), .cin(c[4]), .S(soma[5]), .cout(c[5]));
+    somador_completo soma_x1_7 (.A(b_neg9[6]), .B(raiz[6]), .cin(c[5]), .S(soma[6]), .cout(c[6]));
+    somador_completo soma_x1_8 (.A(b_neg9[7]), .B(raiz[7]), .cin(c[6]), .S(soma[7]), .cout(c[7]));
+    somador_completo soma_x1_9 (.A(b_neg9[8]), .B(raiz[8]), .cin(c[7]), .S(soma[8]), .cout(c[8]));
 
     // Overflow da soma (c[7] XOR c[8])
     xor (ov_soma, c[7], c[8]);

@@ -76,7 +76,6 @@ module calcula_y (
 	buf C_18 (c_ext[18], c[7]);
 	buf C_17 (c_ext[17], c[7]);
 	buf C_16 (c_ext[16], c[7]);
-
 	buf C_15 (c_ext[15], c[7]);
 	buf C_14 (c_ext[14], c[7]);
 	buf C_13 (c_ext[13], c[7]);
@@ -85,7 +84,6 @@ module calcula_y (
 	buf C_10 (c_ext[10], c[7]);
 	buf C_9  (c_ext[9],  c[7]);
 	buf C_8  (c_ext[8],  c[7]);
-
 	buf C_7 (c_ext[7], c[7]);
 	buf C_6 (c_ext[6], c[6]);
 	buf C_5 (c_ext[5], c[5]);

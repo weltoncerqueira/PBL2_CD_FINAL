@@ -127,6 +127,16 @@ set_location_assignment PIN_A10 -to sel_c
 set_location_assignment PIN_A11 -to delta_negativo
 set_location_assignment PIN_D14 -to a_zero
 set_global_assignment -name VERILOG_FILE mux_4x1.v
+set_global_assignment -name VERILOG_FILE detector_de_borda.v
+set_global_assignment -name VERILOG_FILE decoder_abc.v
+set_global_assignment -name VERILOG_FILE ff_D.v
+set_global_assignment -name VERILOG_FILE registrador_8b.v
+set_global_assignment -name VERILOG_FILE verifica_sinal.v
+set_global_assignment -name VERILOG_FILE delta_negativo.v
+set_global_assignment -name VERILOG_FILE numero_Final_8b.v
+set_global_assignment -name VERILOG_FILE complementoDe2_16bits.v
+set_global_assignment -name VERILOG_FILE complementoDe2_24bits.v
+set_global_assignment -name VERILOG_FILE ff_T.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top

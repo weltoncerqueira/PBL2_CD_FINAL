@@ -99,10 +99,10 @@ module integrador (
 	  //captura os sinais de número negativo e acende o led
 	  verifica_sinal sinal1(
 		  .sel(sel),
-		  .x1(x1), 
-		  .x2(x2), 
-		  .y(y), 
-		  .x(sw),
+		  .x1(x1[8]), 
+		  .x2(x2[8]), 
+		  .y(y[23]), 
+		  .x(sw[7]),
 		  .sinal_negativo(sinal_negativo)
 		);
 		
@@ -155,7 +155,7 @@ module integrador (
 			.out(x2_saida)
 		);
 		
-	  //complemento de dois do x2
+	  //complemento de dois do x
 	  complementoDe2_24bits comple24b_x(
 			 .A(shift_x),
 			 .bs(sw[7]),
@@ -261,78 +261,6 @@ module integrador (
 endmodule
 
 
-
-//Verifica se delta é negativo. Caso seja, o valor de x1 e x2 é zerado
-//Dá pra fazer usando mux que seleciona entre o x1 e x2 normal ou zerado
-//a depender do valor de delta_negativo
-
-module delta_negativo (
-	input  [8:0] x1, x2, 
-	input  sinal_delta,
-	output [8:0] x1_saida, x2_saida
-);
-	
-	mux_2x1 mux_01 (.A(x1[0]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[0]));
-	mux_2x1 mux_02 (.A(x1[1]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[1]));
-	mux_2x1 mux_03 (.A(x1[2]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[2]));
-	mux_2x1 mux_04 (.A(x1[3]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[3]));
-	mux_2x1 mux_05 (.A(x1[4]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[4]));
-	mux_2x1 mux_06 (.A(x1[5]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[5]));
-	mux_2x1 mux_07 (.A(x1[6]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[6]));
-	mux_2x1 mux_08 (.A(x1[7]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[7]));
-	mux_2x1 mux_09 (.A(x1[8]), .B(1'b0), .S(sinal_delta), .Y(x1_saida[8]));
-	
-	mux_2x1 mux_11 (.A(x2[0]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[0]));
-	mux_2x1 mux_12 (.A(x2[1]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[1]));
-	mux_2x1 mux_13 (.A(x2[2]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[2]));
-	mux_2x1 mux_14 (.A(x2[3]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[3]));
-	mux_2x1 mux_15 (.A(x2[4]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[4]));
-	mux_2x1 mux_16 (.A(x2[5]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[5]));
-	mux_2x1 mux_17 (.A(x2[6]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[6]));
-	mux_2x1 mux_18 (.A(x2[7]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[7]));
-	mux_2x1 mux_19 (.A(x2[8]), .B(1'b0), .S(sinal_delta), .Y(x2_saida[8]));
-		
-endmodule
-
-
-
-module verifica_sinal (
-	input [1:0] sel,
-	input [8:0] x1, x2, 
-	input [23:0] y, 
-	input [7:0] x,
-	output sinal_negativo
-);
-
-	   // seletor 00 = x
-		// seletor 01 = y
-		// seletor 10 = x1        
-		// seletor 11 = x2
-	wire sinal_x1, sinal_x2, sinal_y, sinal_x;
-	
-	wire selN0, selN1;
-
-	not (selN0, sel[0]);
-	not (selN1, sel[1]);
-
-	// sel = 00 → x
-	and (sinal_x, selN1, selN0, x[7]);
-
-  // sel = 01 → y
-	and (sinal_y, selN1, sel[0], y[23]);
-
-	// sel = 10 → x1
-	and (sinal_x1, sel[1], selN0, x1[8]);
-
-	// sel = 11 → x2
-	and (sinal_x2, sel[1], sel[0], x2[8]);
-
-	or (sinal_negativo, sinal_x, sinal_y, sinal_x1, sinal_x2);
-
-endmodule
-
-
-
 module extensao_pra_24bits (
     input  [7:0]  sw,
     input  [8:0]  x1, x2,
@@ -418,124 +346,5 @@ endmodule
 
 
 
-//registrador_8b.v
-module registrador_8b (
-    input        clk,
-    input        rst,
-    input        enable,
-    input  [7:0] D,
-    output [7:0] S
-);
-
-    wire [7:0] mux_out;
-    wire [7:0] Q;
-
-    mux_2x1 MUX0 (.A(Q[0]), .B(D[0]), .S(enable), .Y(mux_out[0]));
-    ff_D     FF0  (.D(mux_out[0]), .clk(clk), .reset(rst), .Q(Q[0]));
-
-    mux_2x1 MUX1 (.A(Q[1]), .B(D[1]), .S(enable), .Y(mux_out[1]));
-    ff_D     FF1  (.D(mux_out[1]), .clk(clk), .reset(rst), .Q(Q[1]));
-
-    mux_2x1 MUX2 (.A(Q[2]), .B(D[2]), .S(enable), .Y(mux_out[2]));
-    ff_D     FF2  (.D(mux_out[2]), .clk(clk), .reset(rst), .Q(Q[2]));
-
-    mux_2x1 MUX3 (.A(Q[3]), .B(D[3]), .S(enable), .Y(mux_out[3]));
-    ff_D     FF3  (.D(mux_out[3]), .clk(clk), .reset(rst), .Q(Q[3]));
-
-    mux_2x1 MUX4 (.A(Q[4]), .B(D[4]), .S(enable), .Y(mux_out[4]));
-    ff_D     FF4  (.D(mux_out[4]), .clk(clk), .reset(rst), .Q(Q[4]));
-
-    mux_2x1 MUX5 (.A(Q[5]), .B(D[5]), .S(enable), .Y(mux_out[5]));
-    ff_D     FF5  (.D(mux_out[5]), .clk(clk), .reset(rst), .Q(Q[5]));
-
-    mux_2x1 MUX6 (.A(Q[6]), .B(D[6]), .S(enable), .Y(mux_out[6]));
-    ff_D     FF6  (.D(mux_out[6]), .clk(clk), .reset(rst), .Q(Q[6]));
-
-    mux_2x1 MUX7 (.A(Q[7]), .B(D[7]), .S(enable), .Y(mux_out[7]));
-    ff_D     FF7  (.D(mux_out[7]), .clk(clk), .reset(rst), .Q(Q[7]));
-
-    buf (S[0], Q[0]);
-     buf (S[1], Q[1]);
-     buf (S[2], Q[2]);
-     buf (S[3], Q[3]);
-     buf (S[4], Q[4]);
-     buf (S[5], Q[5]);
-     buf (S[6], Q[6]);
-     buf (S[7], Q[7]);
-     
-endmodule
 
 
-//decoder_abc.v
-module decoder_abc (
-    input [1:0] count,
-    output sel_a, sel_b, sel_c
-);
-    wire countN0, countN1;
-
-    not (countN0, count[0]);
-    not (countN1, count[1]);
-
-    // (count = 00)
-    and (sel_a, countN1, countN0);
-
-    // (count = 01)
-    and (sel_b, countN1, count[0]);
-
-    // (count = 10)
-    and (sel_c, count[1], countN0);
-
-    // count = 11 → nenhuma saída ativa (travado), implícito
-endmodule
-
-
-// Módulo: detector_de_borda
-module detector_de_borda (
-    input  clk,
-    input  rst,
-    input  sinal,   // 1 = solto, 0 = pressionado (convenção KEY da DE10-Lite)
-    output pulso
-);
-
-    wire Q1, Q2, Q1N;
-
-    ff_D FF_Detector1 (
-        .D(sinal),
-        .clk(clk),
-        .reset(rst),
-          .Q(Q1)
-    );
-
-    ff_D FF_Detector2 (
-        .D(Q1),
-        .clk(clk),
-        .reset(rst),
-          .Q(Q2)
-    );
-     
-     not (Q1N, Q1);
-     and (pulso, Q1N, Q2);
-    
-     
-endmodule
-
-
-// FPGA projects using Verilog/ VHDL 
-// fpga4student.com
-// Verilog code for D Flip FLop
-// Verilog code for Rising edge D flip flop with Asynchronous Reset high
-module ff_D(D, clk, reset, Q);
-input D; 
-input clk;  
-input reset; 
-output reg Q; 
-
-    always @(posedge clk) 
-      begin
-        if (reset)
-            Q <= 1'b0;
-        else
-            Q <= D;
-     end
-      
-endmodule
