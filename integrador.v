@@ -6,7 +6,7 @@ module integrador (
     input reset,
  
     output [6:0] s0, s1, s2, s3, s4, s5,
-	 output sinal_negativo, delta_negativo, a_zero,
+	 output sinal_negativo, delta_negativo, flag_a_zero,
 	 output sel_a, sel_b, sel_c
     
 );
@@ -105,24 +105,23 @@ module integrador (
 		  .x(sw[7]),
 		  .sinal_negativo(sinal_negativo)
 		);
-		
 	 
      //Verifica se delta é negativo. Caso seja, o valor de x1 e x2 é zerado
      or (delta_negativo, delta_negativo1, delta_negativo2);
 	  
-	  delta_negativo delta2 (
+	  //Verifica se o valor de (a) é zero e aciona a flag
+	  nor (flag_a_zero, reg_a[0], reg_a[1],  reg_a[2], reg_a[3], 
+						reg_a[4], reg_a[5], reg_a[6], reg_a[7]);
+	  
+	  habilita_x1_x2 habilita (
 		  .x1(x1), 
 		  .x2(x2), 
 		  .sinal_delta(delta_negativo),
+		  .flag_a_zero(flag_a_zero),
 		  .x1_saida(x1_zerado), 
 		  .x2_saida(x2_zerado)
 	  );
-	  
-	  //Verifica se o valor de (a) é zero e aciona a flag
-	  nor (a_zero, reg_a[0], reg_a[1],  reg_a[2], reg_a[3], 
-						reg_a[4], reg_a[5], reg_a[6], reg_a[7]);
-	  
-	  
+	  	  
 		
 	  //Extensão das variaveis x1, x2 e x para 24 bits
 	  extensao_pra_24bits extende(
