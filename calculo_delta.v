@@ -127,12 +127,15 @@ module subtrator_18bits (
 	 somador_completo soma17 (a[17], nb[17], c[16], dif[17], c[17]);
 	 
 	 // Tratamento de overflow
-	 // Se A e B têm sinais diferentes, então A e -B terão o mesmo sinal.
 	 wire sinal_diferente;
 	 wire resultado_invalido;
-
+	
+	 // Vai para nível alto (1) apenas se a e b tiverem sinais diferentes
 	 xor (sinal_diferente, a[17], b[17]);
+	
+	 // Vai para nível alto (1) se o sinal do resultado for diferente do sinal de a
 	 xor (resultado_invalido, dif[17], a[17]);
+	
 	 and (overflow, sinal_diferente, resultado_invalido);
 
 endmodule
